@@ -1,0 +1,6 @@
+window width: 600
+window height: 600
+field of view: 90
+max distance: 1000
+screen distance: 0.01
+window name: "test"
