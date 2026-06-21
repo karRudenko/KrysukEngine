@@ -13,7 +13,6 @@ Transform::Transform(YAML::Node const& obj){
     }
     if(obj["texture"]){
         m_mesh.sprite=IMG_Load(obj["texture"].as<std::string>().c_str());
-
         for(auto& pol:m_mesh.data){
 
          pol.sprite=m_mesh.sprite;
@@ -169,7 +168,7 @@ bool Mesh::LoadObjFile(std::string const & path){
         else if(type == "vt"){  
             Vector2D vt;
             ss >> vt.m_u >> vt.m_v;
-            vt.m_v=1-vt.m_v;
+            vt.m_v=-vt.m_v;
            
             float w;
             if (ss >> w) {

@@ -13,6 +13,7 @@ Scene::Scene(std::string const& path) {
 
 bool Scene::create(YAML::Node const& obj){  
         std::string name = obj["name"].as<std::string>();
+        
         if(m_objects.find(name)!=m_objects.end()) return false;
         std::unique_ptr<GameObject> ptr;
 
@@ -33,4 +34,5 @@ bool Scene::create(std::string const& prefab, std::string const& name){
     return true;
 
 }
+
 

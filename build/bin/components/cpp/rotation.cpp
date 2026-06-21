@@ -14,6 +14,7 @@ void rotation::update(Uint32 dT)
     dir.rotate(owner->m_transform.m_rotation);
     if (InputHandler::keyIsPressed(SDLK_w)) {
         owner->m_transform.m_position = owner->m_transform.m_position + dir * moveSpeed;
+        
     }
 
     if (InputHandler::keyIsPressed(SDLK_s)) {
@@ -30,11 +31,11 @@ void rotation::update(Uint32 dT)
     }
 
     if (InputHandler::keyIsPressed(SDLK_LEFT)) {
-        owner->m_transform.m_rotation.m_y += rotSpeed;
+        owner->m_transform.m_rotation.m_y -= rotSpeed;
     }
 
     if (InputHandler::keyIsPressed(SDLK_RIGHT)) {
-        owner->m_transform.m_rotation.m_y -= rotSpeed;
+        owner->m_transform.m_rotation.m_y += rotSpeed;
     }
 }
  void rotation::start(){};

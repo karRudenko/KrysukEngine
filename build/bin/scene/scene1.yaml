@@ -1,0 +1,11 @@
+
+
+gameObjects:
+  - name: "camera"
+    transformation:
+      rotation: [0,0,0]
+      position: [0,0,0]
+    prefab: "prefab/player.yaml"
+
+
+

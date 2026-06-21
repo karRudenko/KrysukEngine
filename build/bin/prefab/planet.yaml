@@ -1,0 +1,4 @@
+components:  
+  - name: "r"
+    type: "r"
+    data: [0,1,0]

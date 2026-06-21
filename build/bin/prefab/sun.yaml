@@ -1,0 +1,4 @@
+components:  
+  - name: "PointLight"
+    type: "Light"
+    data: [0,1,0]

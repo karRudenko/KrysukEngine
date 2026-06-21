@@ -22,13 +22,14 @@ class GameObject{
 
 
     protected:
-        std::string m_name;
+        
         void addComponent(YAML::Node const& data);
         void addComponent(std::string const& name, YAML::Node const& data);
         void addComponent(std::string const& name);
         std::unordered_map<std::string,std::unique_ptr<Component>> m_components;
         Scene* m_scene=nullptr;
     public: 
+        std::string m_name;
         template<typename T>
         T* findComponent(std::string const& name){
             if(m_components.find(name)!=m_components.end()){

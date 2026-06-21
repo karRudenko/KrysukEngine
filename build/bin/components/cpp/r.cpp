@@ -8,6 +8,7 @@ void register_r()
 
 void r::update(Uint32 dT)
 {   
+    owner->m_transform.m_rotation=owner->m_transform.m_rotation+Vector3D(0,10,0);
 }
 
 

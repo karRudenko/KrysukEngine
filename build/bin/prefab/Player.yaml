@@ -1,0 +1,6 @@
+components:
+  - name: "Camera3D"
+    type: "Camera"
+
+  - name: "rotation"
+    type: "rotation"
