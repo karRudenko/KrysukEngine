@@ -10,4 +10,6 @@ KrysukEngine to aplikacja desktopowa dla twórców gier, która pozwala na szybk
 - **Karyna Rudenko** – team leader  
 - **Viktor Zasimovych** – członek zespołu
 
+You will find complete documentation for the project in the folder "resources".
+
 Trello: https://trello.com/b/GS1CTPHB/projekt-io
