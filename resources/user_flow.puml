@@ -1,0 +1,69 @@
+@startuml user_flow
+title Diagram aktywności – Przepływ pracy dewelopera z KrysukEngine\n(Tworzenie i uruchomienie gry: ECS, Renderer, Assety, Wejście, Przenośność)
+
+skinparam activity {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+  StartColor Black
+  EndColor Black
+}
+skinparam ActivityDiamondBackgroundColor White
+skinparam ActivityDiamondBorderColor Black
+
+start
+
+:Utworzenie nowego projektu\ndesktopowego (Windows/Linux);
+
+partition "Epik 1: Podstawowy silnik ECS" {
+  :Zdefiniowanie encji (Entity);
+  :Dodanie komponentów do encji;
+  :Zdefiniowanie własnych systemów\nprzetwarzających komponenty;
+  :Rejestracja cyklu życia systemu\n(init / update / destroy);
+}
+
+partition "Epik 3: Obsługa assetów" {
+  :Wybór modeli 3D (.OBJ)\ni tekstur (PNG/JPG);
+  :Załadowanie modeli przez\nManager assetów;
+  :Załadowanie tekstur przez\nManager assetów;
+  if (Format pliku\nwspierany?) then (nie)
+    :Wyświetlenie błędu\nładowania zasobu;
+    stop
+  else (tak)
+    :Zasoby dostępne\ndla renderera;
+  endif
+}
+
+partition "Epik 2: Renderer 3D" {
+  :Renderer 3D odczytuje\nkomponenty z ECS Core;
+  :Nałożenie tekstur na modele;
+  :Rysowanie modeli 3D\nz użyciem shaderów;
+  :Konfiguracja kamery\n(obrót, przybliżenie);
+}
+
+partition "System wejścia" {
+  :Odebranie zdarzeń\nz klawiatury / myszy;
+  :Aktualizacja komponentów\n(np. pozycja kamery, ruch encji);
+}
+
+:Pętla główna aplikacji:\nUpdate ECS -> Input -> Render;
+
+repeat
+  :Wykonanie kolejnej\niteracji pętli głównej;
+repeat while (Aplikacja\ndziała?) is (tak)
+->nie;
+
+partition "Epik 4: Przenośność między platformami" {
+  if (Platforma\ndocelowa?) then (Windows)
+    :Budowa i uruchomienie\nna Windows;
+  else (Linux)
+    :Budowa i uruchomienie\nna Linux;
+  endif
+  :Gracz uruchamia grę\nbez zmian w kodzie źródłowym;
+}
+
+:Zamknięcie aplikacji\n(zwolnienie zasobów);
+
+stop
+
+@enduml

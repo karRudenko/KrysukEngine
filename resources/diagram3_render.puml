@@ -1,0 +1,54 @@
+@startuml diagram3_pipeline_renderowania
+title Pipeline renderowania pojedynczej ramki (Renderer::render)
+
+skinparam backgroundColor white
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 160
+
+participant "Renderer" as Renderer
+participant "Scene" as Scene
+participant "Camera /\nLight" as CamLight
+participant "BasicGeometry" as Geometry
+
+Renderer -> Scene : findComponents<Camera>("Camera")
+Scene --> Renderer : Camera*
+Renderer -> CamLight : getCameraMatrix()
+CamLight --> Renderer : Matrix4x4
+
+Renderer -> Scene : findComponents<Light>("Light")
+Scene --> Renderer : vector<Light*>
+
+loop dla każdego obiektu w scenie -- projectMesh(transform)
+    Renderer -> Geometry : getRotMatrix(), vectorXmatrix4x4()
+    Geometry --> Renderer : Vector3D (świat)
+
+    alt transform.m_light == true
+        Renderer -> CamLight : getLuminocity(triangle)
+        CamLight -> Geometry : dotProduct(normalna, kierunek)
+        Geometry --> CamLight : float
+        CamLight --> Renderer : luminancja
+    end
+
+    Renderer -> Geometry : vectorXmatrix4x4(camMatrix)
+    Geometry --> Renderer : Vector3D (kamera)
+
+    Renderer -> Renderer : m_collected.push_back(polygon)
+end
+
+Renderer -> Renderer : clipPolygons()
+Renderer -> Geometry : vectorXplainIntersec()
+Geometry --> Renderer : punkt przecięcia
+
+Renderer -> Renderer : projectToScreen()
+note right
+  rzutowanie perspektywiczne
+  (m_projMatrix)
+end note
+
+Renderer -> Renderer : rasterPolygons()
+Renderer -> Renderer : drawPolygon()
+
+Renderer -> Renderer : SDL_UpdateTexture()
+Renderer -> Renderer : SDL_RenderPresent()
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml diagram2_glowna_petla_jedna_ramka
+title Główna pętla -- jedna ramka (Engine::start)
+
+skinparam backgroundColor white
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 160
+
+participant "Engine" as Engine
+participant "InputHandler" as Input
+participant "Renderer" as Renderer
+participant "GameObject" as GameObject
+
+loop while(!m_quit)
+
+    Engine -> Input : pullEvents()
+    Engine -> Input : keyEventofType(SDL_QUIT)
+    Input --> Engine : bool quit
+
+    Engine -> Renderer : render(scene)
+    activate Renderer
+    note right of Renderer
+      pełny pipeline renderowania
+      -- patrz diagram 3
+    end note
+    Renderer -> Renderer : SDL_RenderPresent()
+    Renderer --> Engine : ramka wyświetlona
+    deactivate Renderer
+
+    loop dla każdego obiektu w scenie
+        Engine -> GameObject : update(dt)
+        activate GameObject
+        GameObject -> GameObject : update() na każdym Component
+        deactivate GameObject
+    end
+
+    Engine -> Engine : lastUpdate = timer.getTicks()
+
+end
+
+@enduml

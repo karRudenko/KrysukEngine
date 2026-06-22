@@ -1,0 +1,49 @@
+@startuml diagram1_start_aplikacji_wczytanie_sceny
+title Start aplikacji i wczytanie sceny
+
+skinparam backgroundColor white
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 160
+
+participant "Engine" as Engine
+participant "Scene" as Scene
+participant "GameObject" as GameObject
+participant "ComponentFactory" as Factory
+
+Engine -> Scene : Scene(path)
+activate Scene
+
+Scene -> Scene : YAML::LoadFile(path)
+
+loop dla każdego obiektu w pliku scena.yaml
+    Scene -> GameObject : create(obj)
+    activate GameObject
+
+    GameObject -> GameObject : Transform(obj)
+    GameObject -> GameObject : YAML::LoadFile(prefab)
+
+    loop dla każdego komponentu w prefabricie
+        GameObject -> GameObject : addComponent(comp)
+        GameObject -> Factory : create(name)
+        activate Factory
+
+        Factory -> Factory : szukaj m_creators[name]
+        Factory --> GameObject : unique_ptr<Component>
+        deactivate Factory
+
+        GameObject -> GameObject : comp->owner = this
+        GameObject -> GameObject : comp->init(data)
+        GameObject -> GameObject : comp->start()
+    end
+    deactivate GameObject
+end
+
+Scene --> Engine : scena wczytana
+deactivate Scene
+
+note over Engine
+  Dalej: główna pętla gry
+  (Engine::start -> while(!m_quit))
+end note
+
+@enduml
